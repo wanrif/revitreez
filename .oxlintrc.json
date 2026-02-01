@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "import"],
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "ignorePatterns": ["dist/**", "**/src/routeTree.gen.ts"],
+  "settings": {
+    "react": {
+      "version": "19.0.0"
+    }
+  }
+}

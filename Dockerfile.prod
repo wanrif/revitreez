@@ -1,0 +1,62 @@
+# Production Dockerfile for RevitReez
+# Multi-stage build for optimal image size and security
+
+# Pin specific Bun version instead of using latest
+FROM oven/bun:1-alpine AS base
+WORKDIR /usr/src/app
+
+# Install dependencies into temp directory
+# Separate dev and prod dependencies for optimal caching
+FROM base AS install
+
+# Install all dependencies (including devDependencies) for building
+RUN mkdir -p /temp/dev
+COPY package.json bun.lock /temp/dev/
+RUN cd /temp/dev && bun install --frozen-lockfile
+
+# Install only production dependencies (exclude devDependencies)
+RUN mkdir -p /temp/prod
+COPY package.json bun.lock /temp/prod/
+RUN cd /temp/prod && bun install --frozen-lockfile --production
+
+# Build stage - copy dev dependencies and build the application
+FROM base AS prerelease
+COPY --from=install /temp/dev/node_modules node_modules
+COPY . .
+
+# Set production environment and build
+ENV NODE_ENV=production
+RUN bun run build
+
+# Production stage - minimal nginx image with only built assets
+FROM nginx:1.29-alpine AS production
+
+# Install wget for health checks
+RUN apk add --no-cache wget
+
+# Copy custom nginx config
+COPY --from=prerelease /usr/src/app/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy built assets from prerelease stage
+COPY --from=prerelease /usr/src/app/dist /usr/share/nginx/html
+
+# Set proper permissions for nginx user (already exists in nginx:alpine)
+RUN chown -R nginx:nginx /usr/share/nginx/html && \
+    chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /var/log/nginx && \
+    chown -R nginx:nginx /etc/nginx/conf.d && \
+    touch /var/run/nginx.pid && \
+    chown -R nginx:nginx /var/run/nginx.pid
+
+# Switch to non-root user for security
+USER nginx
+
+# Health check using the /health endpoint from nginx config
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost/health || exit 1
+
+# Expose port 80
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
