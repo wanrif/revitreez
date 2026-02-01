@@ -1,0 +1,13 @@
+node_modules
+dist
+build
+.vite
+.cache
+coverage
+*.min.js
+*.d.ts
+public
+.env
+.env.local
+.husky
+**/src/routeTree.gen.ts
