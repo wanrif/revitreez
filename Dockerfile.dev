@@ -1,0 +1,42 @@
+# Development Dockerfile for RevitReez
+# Uses Bun runtime for faster development experience
+
+# Pin specific version instead of using latest
+FROM oven/bun:1-alpine AS base
+WORKDIR /usr/src/app
+
+# Install dependencies into temp directory
+# This caches dependencies and speeds up future builds
+FROM base AS install
+RUN mkdir -p /temp/dev
+COPY package.json bun.lock /temp/dev/
+RUN cd /temp/dev && bun install --frozen-lockfile
+
+# Development stage
+FROM base AS development
+
+# Set environment to development
+ENV NODE_ENV=development
+
+# Copy node_modules from install stage
+COPY --from=install /temp/dev/node_modules node_modules
+
+# Copy source code (mounted via volume in docker-compose)
+COPY . .
+
+# Create non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup && \
+    chown -R appuser:appgroup /usr/src/app
+
+# Switch to non-root user
+USER appuser
+
+# Expose Vite dev server port
+EXPOSE 5173
+
+# Health check for development
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost:5173/ || exit 1
+
+# Run development server with host binding for Docker
+CMD ["bun", "run", "dev", "--host"]

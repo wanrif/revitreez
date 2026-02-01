@@ -1,0 +1,4 @@
+@import 'tailwindcss';
+@plugin '@toolwind/corner-shape';
+
+@custom-variant dark (&:where(.dark, .dark *));

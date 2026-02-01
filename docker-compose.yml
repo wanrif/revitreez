@@ -1,0 +1,80 @@
+services:
+  # Development service
+  revitreez-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: development
+    container_name: revitreez-dev
+    ports:
+      - "${DEV_PORT:-5173}:5173"
+    volumes:
+      # Mount source code for hot reload
+      - ./src:/usr/src/app/src
+      - ./public:/usr/src/app/public
+      - ./index.html:/usr/src/app/index.html
+      - ./vite.config.ts:/usr/src/app/vite.config.ts
+      - ./tsconfig.json:/usr/src/app/tsconfig.json
+      - ./tsconfig.app.json:/usr/src/app/tsconfig.app.json
+      - ./tsconfig.node.json:/usr/src/app/tsconfig.node.json
+      # Prevent node_modules from being overwritten by local directory
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_PORT=5173
+      # Add your API URL here or set in .env file
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL:-http://localhost:3000/api}
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    networks:
+      - revitreez-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:5173/",
+        ]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+
+  # Production service
+  revitreez-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      target: production
+    container_name: revitreez-prod
+    ports:
+      - "${PROD_PORT:-8080}:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - revitreez-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost/health",
+        ]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+    profiles:
+      - production
+
+networks:
+  revitreez-network:
+    driver: bridge
