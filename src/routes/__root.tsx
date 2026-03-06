@@ -1,7 +1,6 @@
+import { NotFound } from '@/components/layouts'
 import { createRootRouteWithContext, HeadContent, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-
-import { NotFound } from '@/components/layouts'
 
 // interface RouterContext {}
 

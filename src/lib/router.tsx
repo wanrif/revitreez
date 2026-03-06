@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react'
 
+import { Loader } from '@/components/shared/loader'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { createRouter } from '@tanstack/react-router'
-
-import { Loader } from '@/components/shared/loader'
 
 import { routeTree } from '../routeTree.gen'
 import queryClient from './query-client'

@@ -1,12 +1,11 @@
 import React from 'react'
 
+import queryClient from '@/lib/query-client'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import { formDevtoolsPlugin } from '@tanstack/react-form-devtools'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ThemeProvider } from 'next-themes'
-
-import queryClient from '@/lib/query-client'
 
 interface ProvidersProps {
   children: React.ReactNode

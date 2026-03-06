@@ -1,6 +1,5 @@
-import { Link } from '@tanstack/react-router'
-
 import Button from '@/components/shared/button'
+import { Link } from '@tanstack/react-router'
 
 const NotFound = () => {
   return (

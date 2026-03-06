@@ -44,15 +44,17 @@
     }
   ],
   "sortImports": {
+    "order": "asc",
+    "internalPattern": ["^~/.+", "^@/.+"],
     "customGroups": [
       {
-        "groupName": "react-libs",
-        "elementNamePattern": ["react", "react-dom", "react-**"]
+        "groupName": "react",
+        "elementNamePattern": ["react", "react-**", "react-dom/**"]
       }
     ],
     "groups": [
+      "react",
       "type-import",
-      "react-libs",
       ["value-builtin", "value-external"],
       "value-internal",
       ["type-parent", "type-sibling", "type-index"],

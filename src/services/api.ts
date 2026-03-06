@@ -1,9 +1,8 @@
 import type { ErrorResponse, PaginatedResponseData, ResponseData } from '@/types/api'
 import type { AxiosRequestConfig } from 'axios'
 
-import { isAxiosError } from 'axios'
-
 import clientRequest from '@/services/request'
+import { isAxiosError } from 'axios'
 
 /**
  * Base API error class with typed response
