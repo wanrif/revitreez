@@ -1,6 +1,6 @@
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { fileURLToPath } from 'url'
 import { defineConfig } from 'vite'
@@ -25,11 +25,12 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    target: 'es2020',
     cssCodeSplit: true,
     sourcemap: false,
     reportCompressedSize: false,
-    rollupOptions: {
+    cssMinify: 'lightningcss',
+    minify: 'oxc',
+    rolldownOptions: {
       plugins: [
         ...(isAnalyze
           ? [
@@ -44,6 +45,12 @@ export default defineConfig({
           : []),
       ],
       output: {
+        minify: {
+          compress: {
+            dropConsole: true,
+            dropDebugger: true,
+          },
+        },
         entryFileNames: 'assets/js/[name]-[hash].js',
         chunkFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames(assetInfo) {

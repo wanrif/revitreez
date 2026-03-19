@@ -66,6 +66,7 @@
   },
   "sortTailwindcss": {
     "stylesheet": "./src/assets/css/main.css",
-    "functions": ["clsx", "cn"]
+    "functions": ["clsx", "cn"],
+    "preserveWhitespace": true
   }
 }
