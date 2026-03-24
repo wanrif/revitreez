@@ -70,35 +70,24 @@ export default defineConfig({
 
           return 'assets/[name]-[hash][extname]'
         },
-        manualChunks(id) {
-          if (!id.includes('node_modules')) {
-            return
-          }
-
-          const modulePath = id.split('node_modules/')[1]
-          const segments = modulePath.split('/')
-          const packageName = segments[0].startsWith('@')
-            ? `${segments[0]}/${segments[1]}`
-            : segments[0]
-
-          // Keep major framework dependencies in stable chunks for better long-term caching.
-          if (
-            packageName === 'react' ||
-            packageName === 'react-dom' ||
-            packageName === 'scheduler'
-          ) {
-            return 'react-vendor'
-          }
-
-          if (packageName.startsWith('@tanstack')) {
-            return 'tanstack-vendor'
-          }
-
-          if (packageName === 'axios' || packageName === 'zustand' || packageName === 'zod') {
-            return 'data-vendor'
-          }
-
-          return 'vendor'
+        codeSplitting: {
+          groups: [
+            {
+              test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+              name: 'react-vendor',
+              priority: 20,
+            },
+            {
+              test: /[\\/]node_modules[\\/]@tanstack[\\/]/,
+              name: 'tanstack-vendor',
+              priority: 15,
+            },
+            {
+              test: /[\\/]node_modules[\\/](axios|zustand|zod)[\\/]/,
+              name: 'data-vendor',
+              priority: 10,
+            },
+          ],
         },
       },
     },
