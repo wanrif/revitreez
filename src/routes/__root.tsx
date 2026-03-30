@@ -1,10 +1,10 @@
+import type { RouterContext } from '@/lib/router-context'
+
 import { NotFound } from '@/components/layouts'
 import { createRootRouteWithContext, HeadContent, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
-// interface RouterContext {}
-
-export const Route = createRootRouteWithContext()({
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
   head: () => ({
     meta: [

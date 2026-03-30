@@ -1,11 +1,9 @@
-import type { ReactNode } from 'react'
+import type { RouterContext } from '@/lib/router-context'
 
 import { Loader } from '@/components/shared/loader'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { createRouter } from '@tanstack/react-router'
 
 import { routeTree } from '../routeTree.gen'
-import queryClient from './query-client'
 
 declare module '@tanstack/react-router' {
   interface Register {
@@ -16,7 +14,6 @@ declare module '@tanstack/react-router' {
 export const router = createRouter({
   routeTree,
   scrollRestoration: true,
-  defaultPreload: 'intent',
   defaultPendingComponent: () => <Loader />,
   defaultErrorComponent: ({ error }) => (
     <div className='p-4 text-center'>
@@ -27,11 +24,12 @@ export const router = createRouter({
     </div>
   ),
   context: {
-    auth: undefined!,
-  },
-  Wrap: function WrapComponent({ children }: { children: ReactNode }) {
-    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  },
+    auth: {
+      session: null,
+      isAuthenticated: false,
+      isLoading: true,
+    },
+  } satisfies RouterContext,
 })
 
 export default router
