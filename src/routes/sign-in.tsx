@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
-import Button from '@/components/shared/button'
-import { Checkbox } from '@/components/shared/checkbox'
+import { Button, Checkbox, Input } from '@/components/shared'
 import { authClient } from '@/lib/auth-client'
 import { authSessionQueryOptions, useAuthSessionQuery } from '@/lib/auth-query'
 import { requireGuest } from '@/lib/auth-route-guards'
@@ -22,9 +21,6 @@ const OAUTH_PROVIDERS: string[] = (import.meta.env.VITE_AUTH_PROVIDERS || 'googl
   .split(',')
   .map((provider: string) => provider.trim().toLowerCase())
   .filter(Boolean)
-
-const inputClassName =
-  'w-full rounded-2xl border border-neutral-300 bg-white px-4 py-2 text-sm text-neutral-900 outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-100 dark:border-neutral-700 dark:bg-neutral-950 dark:text-neutral-100 dark:focus:ring-teal-900/30'
 
 const signInSchema = z.object({
   email: z.email('Please enter a valid email'),
@@ -245,13 +241,13 @@ function SignInPage() {
                 }}
               >
                 {(field) => (
-                  <input
+                  <Input
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(event) => field.handleChange(event.target.value)}
                     placeholder='Email address'
                     type='email'
-                    className={inputClassName}
+                    error={field.state.meta.errors[0]}
                   />
                 )}
               </signInForm.Field>
@@ -266,13 +262,13 @@ function SignInPage() {
                 }}
               >
                 {(field) => (
-                  <input
+                  <Input
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(event) => field.handleChange(event.target.value)}
                     placeholder='Password'
                     type='password'
-                    className={inputClassName}
+                    error={field.state.meta.errors[0]}
                   />
                 )}
               </signInForm.Field>
@@ -312,12 +308,12 @@ function SignInPage() {
                 }}
               >
                 {(field) => (
-                  <input
+                  <Input
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(event) => field.handleChange(event.target.value)}
                     placeholder='Full name'
-                    className={inputClassName}
+                    error={field.state.meta.errors[0]}
                   />
                 )}
               </signUpForm.Field>
@@ -332,13 +328,13 @@ function SignInPage() {
                 }}
               >
                 {(field) => (
-                  <input
+                  <Input
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(event) => field.handleChange(event.target.value)}
                     placeholder='Email address'
                     type='email'
-                    className={inputClassName}
+                    error={field.state.meta.errors[0]}
                   />
                 )}
               </signUpForm.Field>
@@ -356,13 +352,13 @@ function SignInPage() {
                 }}
               >
                 {(field) => (
-                  <input
+                  <Input
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(event) => field.handleChange(event.target.value)}
                     placeholder='Password'
                     type='password'
-                    className={inputClassName}
+                    error={field.state.meta.errors[0]}
                   />
                 )}
               </signUpForm.Field>
@@ -383,13 +379,13 @@ function SignInPage() {
                 }}
               >
                 {(field) => (
-                  <input
+                  <Input
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(event) => field.handleChange(event.target.value)}
                     placeholder='Confirm password'
                     type='password'
-                    className={inputClassName}
+                    error={field.state.meta.errors[0]}
                   />
                 )}
               </signUpForm.Field>
@@ -433,13 +429,13 @@ function SignInPage() {
                 }}
               >
                 {(field) => (
-                  <input
+                  <Input
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(event) => field.handleChange(event.target.value)}
                     placeholder='Email address'
                     type='email'
-                    className={inputClassName}
+                    error={field.state.meta.errors[0]}
                   />
                 )}
               </forgotPasswordForm.Field>
