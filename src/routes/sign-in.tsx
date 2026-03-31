@@ -125,6 +125,7 @@ function SignInPage() {
           name: parsed.data.name,
           email: parsed.data.email,
           password: parsed.data.password,
+          rememberMe: parsed.data.rememberMe,
           callbackURL: redirectTo,
         })
 
