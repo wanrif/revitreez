@@ -45,6 +45,16 @@ const forgotPasswordSchema = z.object({
   email: z.email('Please enter a valid email'),
 })
 
+function sanitizeRedirect(value: string | undefined): string {
+  const fallback = '/dashboard'
+  if (!value) return fallback
+  // Reject anything with a scheme (e.g. http://, https://) or protocol-relative URLs (//)
+  if (/^[a-z][a-z\d+\-.]*:/i.test(value) || value.startsWith('//')) return fallback
+  // Must start with a single /
+  if (!value.startsWith('/')) return fallback
+  return value
+}
+
 function SignInPage() {
   const { data: session, refetch, isRefetching } = useAuthSessionQuery()
   const navigate = useNavigate()
@@ -53,7 +63,7 @@ function SignInPage() {
   const [mode, setMode] = useState<AuthMode>('sign-in')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const redirectTo = search.redirect || '/dashboard'
+  const redirectTo = sanitizeRedirect(search.redirect)
   const isSessionActive = Boolean(session)
 
   const goAfterAuth = async () => {
