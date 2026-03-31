@@ -7,7 +7,7 @@ const Navbar = () => {
   const { data: session } = useAuthSessionQuery()
   const signOutMutation = useSignOutMutation()
 
-  const user = (session as { user?: { name?: string | null; email?: string | null } } | null)?.user
+  const user = session?.user
   const userLabel = user?.name || user?.email || 'Account'
 
   return (
