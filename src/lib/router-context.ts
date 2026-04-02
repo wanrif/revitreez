@@ -1,4 +1,5 @@
 import type { AuthSession } from '@/lib/auth-client'
+import type { QueryClient } from '@tanstack/react-query'
 
 export interface AuthRouterContext {
   session: AuthSession
@@ -8,4 +9,5 @@ export interface AuthRouterContext {
 
 export interface RouterContext {
   auth: AuthRouterContext
+  queryClient: QueryClient
 }

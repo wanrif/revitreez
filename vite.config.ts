@@ -53,37 +53,21 @@ export default defineConfig({
         },
         entryFileNames: 'assets/js/[name]-[hash].js',
         chunkFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames(assetInfo) {
-          const extension = assetInfo.name?.split('.').pop() ?? ''
-
-          if (extension === 'css') {
-            return 'assets/css/[name]-[hash][extname]'
-          }
-
-          if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'avif', 'ico'].includes(extension)) {
-            return 'assets/images/[name]-[hash][extname]'
-          }
-
-          if (['woff', 'woff2', 'ttf', 'otf', 'eot'].includes(extension)) {
-            return 'assets/fonts/[name]-[hash][extname]'
-          }
-
-          return 'assets/[name]-[hash][extname]'
-        },
+        assetFileNames: `assets/[name]-[hash].[ext]`,
         codeSplitting: {
           groups: [
             {
-              test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
               name: 'react-vendor',
+              test: /node_modules[\\/]react/,
               priority: 20,
             },
             {
-              test: /[\\/]node_modules[\\/]@tanstack[\\/]/,
+              test: /node_modules[\\/]@tanstack[\\/]/,
               name: 'tanstack-vendor',
               priority: 15,
             },
             {
-              test: /[\\/]node_modules[\\/](axios|zustand|zod)[\\/]/,
+              test: /node_modules[\\/](axios|zustand|zod)[\\/]/,
               name: 'data-vendor',
               priority: 10,
             },

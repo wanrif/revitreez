@@ -13,6 +13,9 @@ import { z } from 'zod'
 export const Route = createFileRoute('/sign-in')({
   beforeLoad: requireGuest,
   component: SignInPage,
+  validateSearch: z.strictObject({
+    redirect: z.string().optional(),
+  }),
 })
 
 type AuthMode = 'sign-in' | 'sign-up' | 'forgot-password'
@@ -58,7 +61,7 @@ function sanitizeRedirect(value: string | undefined): string {
 function SignInPage() {
   const { data: session, refetch, isRefetching } = useAuthSessionQuery()
   const navigate = useNavigate()
-  const search = Route.useSearch() as { redirect?: string }
+  const search = Route.useSearch()
 
   const [mode, setMode] = useState<AuthMode>('sign-in')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -135,7 +138,6 @@ function SignInPage() {
           name: parsed.data.name,
           email: parsed.data.email,
           password: parsed.data.password,
-          rememberMe: parsed.data.rememberMe,
           callbackURL: redirectTo,
         })
 
@@ -403,13 +405,11 @@ function SignInPage() {
 
               <signUpForm.Field name='rememberMe'>
                 {(field) => (
-                  <label className='flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-300'>
-                    <Checkbox
-                      checked={field.state.value}
-                      onCheckedChange={(checked) => field.handleChange(Boolean(checked))}
-                    />
-                    Remember me
-                  </label>
+                  <Checkbox
+                    label='Remember me'
+                    checked={field.state.value}
+                    onChange={(checked) => field.handleChange(Boolean(checked))}
+                  />
                 )}
               </signUpForm.Field>
 
