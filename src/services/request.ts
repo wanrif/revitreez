@@ -1,4 +1,14 @@
+import { betterAuthBaseURL } from '@/lib/auth-client'
+import {
+  buildSignInRedirectHref,
+  getCurrentAppPath,
+  isAuthApiRequest,
+  isPublicPath,
+} from '@/lib/auth-navigation'
+import { clearAuthSession } from '@/lib/auth-query'
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios'
+
+let isHandlingUnauthorized = false
 
 /**
  * Configured Axios instance with security features:
@@ -68,29 +78,22 @@ clientRequest.interceptors.response.use(
     return response
   },
   async (error: AxiosError) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig & {
-      _retry?: boolean
-    }
+    const originalRequest = error.config as InternalAxiosRequestConfig | undefined
 
-    // Handle 401 Unauthorized - could trigger re-authentication
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true
+    if (error.response?.status === 401) {
+      await clearAuthSession()
 
-      // Optional: Implement token refresh logic here
-      // try {
-      //   const refreshToken = localStorage.getItem('refresh_token')
-      //   const response = await axios.post('/auth/refresh', { refreshToken })
-      //   const { token } = response.data
-      //   localStorage.setItem('auth_token', token)
-      //   if (originalRequest.headers) {
-      //     originalRequest.headers.Authorization = `Bearer ${token}`
-      //   }
-      //   return clientRequest(originalRequest)
-      // } catch (refreshError) {
-      //   // Redirect to login or trigger auth flow
-      //   window.location.href = '/login'
-      //   return Promise.reject(refreshError)
-      // }
+      const currentPath = getCurrentAppPath()
+      const requestUrl = originalRequest?.url
+
+      if (
+        !isHandlingUnauthorized &&
+        !isPublicPath(window.location.pathname) &&
+        !isAuthApiRequest(requestUrl, betterAuthBaseURL)
+      ) {
+        isHandlingUnauthorized = true
+        window.location.assign(buildSignInRedirectHref(currentPath))
+      }
     }
 
     // Handle 403 Forbidden

@@ -1,10 +1,11 @@
 import { useState } from 'react'
 
 import { Button, Checkbox, Input } from '@/components/shared'
+import { Loader } from '@/components/shared/loader'
 import { authClient } from '@/lib/auth-client'
-import { authSessionQueryOptions, useAuthSessionQuery } from '@/lib/auth-query'
+import { sanitizeRedirectPath } from '@/lib/auth-navigation'
+import { clearAuthSession, refreshAuthSession, useAuthSessionQuery } from '@/lib/auth-query'
 import { requireGuest } from '@/lib/auth-route-guards'
-import queryClient from '@/lib/query-client'
 import { useForm } from '@tanstack/react-form'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
@@ -37,7 +38,6 @@ const signUpSchema = z
     email: z.email('Please enter a valid email'),
     password: z.string().min(8, 'Password must be at least 8 characters'),
     confirmPassword: z.string().min(1, 'Confirm your password'),
-    rememberMe: z.boolean(),
   })
   .refine((value) => value.password === value.confirmPassword, {
     message: 'Password confirmation does not match',
@@ -48,30 +48,20 @@ const forgotPasswordSchema = z.object({
   email: z.email('Please enter a valid email'),
 })
 
-function sanitizeRedirect(value: string | undefined): string {
-  const fallback = '/dashboard'
-  if (!value) return fallback
-  // Reject anything with a scheme (e.g. http://, https://) or protocol-relative URLs (//)
-  if (/^[a-z][a-z\d+\-.]*:/i.test(value) || value.startsWith('//')) return fallback
-  // Must start with a single /
-  if (!value.startsWith('/')) return fallback
-  return value
-}
-
 function SignInPage() {
-  const { data: session, refetch, isRefetching } = useAuthSessionQuery()
+  const { data: session, isLoading, refetch, isRefetching } = useAuthSessionQuery()
   const navigate = useNavigate()
   const search = Route.useSearch()
 
   const [mode, setMode] = useState<AuthMode>('sign-in')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const redirectTo = sanitizeRedirect(search.redirect)
+  const redirectTo = sanitizeRedirectPath(search.redirect)
   const isSessionActive = Boolean(session)
 
   const goAfterAuth = async () => {
-    await queryClient.invalidateQueries({ queryKey: authSessionQueryOptions.queryKey })
-    await refetch()
+    await clearAuthSession()
+    await refreshAuthSession()
     await navigate({ to: redirectTo, replace: true })
   }
 
@@ -123,7 +113,6 @@ function SignInPage() {
       email: '',
       password: '',
       confirmPassword: '',
-      rememberMe: true,
     },
     onSubmit: async ({ value }) => {
       const parsed = signUpSchema.safeParse(value)
@@ -214,6 +203,10 @@ function SignInPage() {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  if (isLoading) {
+    return <Loader label='Checking your session' showLabel className='min-h-[60vh]' />
   }
 
   return (
@@ -399,16 +392,6 @@ function SignInPage() {
                     placeholder='Confirm password'
                     type='password'
                     error={field.state.meta.errors[0]}
-                  />
-                )}
-              </signUpForm.Field>
-
-              <signUpForm.Field name='rememberMe'>
-                {(field) => (
-                  <Checkbox
-                    label='Remember me'
-                    checked={field.state.value}
-                    onChange={(checked) => field.handleChange(Boolean(checked))}
                   />
                 )}
               </signUpForm.Field>

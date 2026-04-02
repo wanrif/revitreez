@@ -1,7 +1,8 @@
 import Button from '@/components/shared/button'
+import { Loader } from '@/components/shared/loader'
 import { useAuthSessionQuery } from '@/lib/auth-query'
 import { requireAuth } from '@/lib/auth-route-guards'
-import { createFileRoute } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_app/dashboard')({
   beforeLoad: requireAuth,
@@ -9,7 +10,27 @@ export const Route = createFileRoute('/_app/dashboard')({
 })
 
 function DashboardPage() {
-  const { data: session, refetch, isRefetching } = useAuthSessionQuery()
+  const { data: session, isLoading, refetch, isRefetching } = useAuthSessionQuery()
+
+  if (isLoading) {
+    return <Loader label='Loading your dashboard' showLabel className='min-h-[40vh]' />
+  }
+
+  if (!session) {
+    return (
+      <div className='space-y-4 rounded-3xl border border-amber-200 bg-amber-50 p-6 text-amber-950 corner-squircle dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100'>
+        <div className='space-y-2'>
+          <h2 className='text-xl font-semibold'>Session expired</h2>
+          <p className='text-sm text-amber-900/80 dark:text-amber-100/80'>
+            Your protected session is no longer available. Sign in again to continue.
+          </p>
+        </div>
+        <Link to='/sign-in'>
+          <Button size='sm'>Go to Sign In</Button>
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div className='space-y-6'>

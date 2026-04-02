@@ -4,7 +4,7 @@ import { useAuthSessionQuery, useSignOutMutation } from '@/lib/auth-query'
 import { Link } from '@tanstack/react-router'
 
 const Navbar = () => {
-  const { data: session } = useAuthSessionQuery()
+  const { data: session, isLoading } = useAuthSessionQuery()
   const signOutMutation = useSignOutMutation()
 
   const user = session?.user
@@ -36,7 +36,9 @@ const Navbar = () => {
 
           <div className='flex items-center gap-3'>
             <ButtonTheme />
-            {session ? (
+            {isLoading ? (
+              <div className='h-4 w-12 animate-pulse rounded bg-neutral-200 dark:bg-neutral-700' />
+            ) : session ? (
               <>
                 <span className='hidden text-sm text-neutral-600 sm:inline dark:text-neutral-300'>
                   {userLabel}
