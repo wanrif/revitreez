@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 import { Button, Checkbox, Input } from '@/components/shared'
-import { Loader } from '@/components/shared/loader'
 import { authClient } from '@/lib/auth-client'
 import { sanitizeRedirectPath } from '@/lib/auth-navigation'
 import { clearAuthSession, refreshAuthSession, useAuthSessionQuery } from '@/lib/auth-query'
@@ -49,7 +48,7 @@ const forgotPasswordSchema = z.object({
 })
 
 function SignInPage() {
-  const { data: session, isLoading, refetch, isRefetching } = useAuthSessionQuery()
+  const { data: session, refetch, isRefetching } = useAuthSessionQuery()
   const navigate = useNavigate()
   const search = Route.useSearch()
 
@@ -203,10 +202,6 @@ function SignInPage() {
     } finally {
       setIsSubmitting(false)
     }
-  }
-
-  if (isLoading) {
-    return <Loader label='Checking your session' showLabel className='min-h-[60vh]' />
   }
 
   return (

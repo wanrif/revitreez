@@ -1,4 +1,4 @@
-import Button from '@/components/shared/button'
+import { Button, Skeleton } from '@/components/shared'
 import { ButtonTheme } from '@/components/ui'
 import { useAuthSessionQuery, useSignOutMutation } from '@/lib/auth-query'
 import { Link } from '@tanstack/react-router'
@@ -36,29 +36,29 @@ const Navbar = () => {
 
           <div className='flex items-center gap-3'>
             <ButtonTheme />
-            {isLoading ? (
-              <div className='h-4 w-12 animate-pulse rounded bg-neutral-200 dark:bg-neutral-700' />
-            ) : session ? (
-              <>
-                <span className='hidden text-sm text-neutral-600 sm:inline dark:text-neutral-300'>
-                  {userLabel}
-                </span>
-                <Button
-                  variant='ghost'
-                  size='sm'
-                  onClick={() => signOutMutation.mutate()}
-                  disabled={signOutMutation.isPending}
-                >
-                  {signOutMutation.isPending ? 'Signing out...' : 'Sign Out'}
-                </Button>
-              </>
-            ) : (
-              <Link to='/sign-in'>
-                <Button variant='ghost' size='sm'>
-                  Sign In
-                </Button>
-              </Link>
-            )}
+            <Skeleton loading={isLoading} className='h-8 w-24 rounded-md'>
+              {session ? (
+                <>
+                  <span className='hidden text-sm text-neutral-600 sm:inline dark:text-neutral-300'>
+                    {userLabel}
+                  </span>
+                  <Button
+                    variant='ghost'
+                    size='sm'
+                    onClick={() => signOutMutation.mutate()}
+                    disabled={signOutMutation.isPending}
+                  >
+                    {signOutMutation.isPending ? 'Signing out...' : 'Sign Out'}
+                  </Button>
+                </>
+              ) : (
+                <Link to='/sign-in'>
+                  <Button variant='ghost' size='sm'>
+                    Sign In
+                  </Button>
+                </Link>
+              )}
+            </Skeleton>
           </div>
         </div>
       </div>

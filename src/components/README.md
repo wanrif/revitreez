@@ -7,7 +7,7 @@ This folder contains reusable React components, organized by role.
 - **layouts/**: Route-level shells and top-level layout pieces (e.g.,
   `MainLayout`, `Navbar`).
 - **shared/**: Reusable building blocks with behavior (e.g., `Button`, `Loader`,
-  `Toaster`).
+  `Skeleton`, `Toaster`).
 - **ui/**: Small, mostly presentational components (e.g., `ButtonTheme`).
 
 ## Conventions
@@ -21,6 +21,9 @@ This folder contains reusable React components, organized by role.
 - **Styling**: Tailwind utility classes inline. Use `cn()` when composing
   classes.
 - **Imports**: Prefer `@/` alias for cross-folder imports.
+- **Skeletons**: Prefer wrapping the real UI in `Skeleton loading={...}` so the
+  placeholder layout is derived from the rendered component instead of manually
+  specifying placeholder sizes.
 
 ## Examples
 

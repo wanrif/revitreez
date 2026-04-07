@@ -1,5 +1,6 @@
 export { default as Button } from './button'
 export { default as Input } from './input'
 export { Loader } from './loader'
+export { Skeleton } from './skeleton'
 export { Toaster } from './sonner'
 export { Checkbox } from './checkbox'

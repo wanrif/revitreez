@@ -49,6 +49,7 @@ export const Checkbox: FC<CheckboxProps> = ({
 
       <span
         aria-hidden='true'
+        data-skeleton-block='true'
         className={cn(
           'flex h-4 w-4 shrink-0 items-center justify-center rounded-md border transition-colors duration-150 ease-out',
           'peer-focus-visible:border-teal-500 peer-focus-visible:ring-3 peer-focus-visible:ring-teal-500/20',
@@ -58,6 +59,7 @@ export const Checkbox: FC<CheckboxProps> = ({
         )}
       >
         <svg
+          data-skeleton-ignore='true'
           viewBox='0 0 16 16'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
