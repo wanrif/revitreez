@@ -92,7 +92,11 @@ clientRequest.interceptors.response.use(
         !isAuthApiRequest(requestUrl, betterAuthBaseURL)
       ) {
         isHandlingUnauthorized = true
-        window.location.assign(buildSignInRedirectHref(currentPath))
+        try {
+          window.location.assign(buildSignInRedirectHref(currentPath))
+        } finally {
+          isHandlingUnauthorized = false
+        }
       }
     }
 

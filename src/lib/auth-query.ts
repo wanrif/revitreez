@@ -43,6 +43,7 @@ export const authSessionQueryOptions = queryOptions({
     return response.data ?? null
   },
   retry: shouldRetryAuthSession,
+  staleTime: 60_000,
   refetchOnReconnect: true,
   refetchOnWindowFocus: true,
 })
@@ -80,8 +81,8 @@ export async function refreshAuthSession(queryClientInstance: QueryClient = quer
   })
 }
 
-export function useAuthSessionQuery() {
-  return useQuery(authSessionQueryOptions)
+export function useAuthSessionQuery(overrides?: { enabled?: boolean }) {
+  return useQuery({ ...authSessionQueryOptions, ...overrides })
 }
 
 export function useSignOutMutation() {

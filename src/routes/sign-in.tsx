@@ -48,7 +48,7 @@ const forgotPasswordSchema = z.object({
 })
 
 function SignInPage() {
-  const { data: session, refetch, isRefetching } = useAuthSessionQuery()
+  const { data: session, refetch, isRefetching } = useAuthSessionQuery({ enabled: false })
   const navigate = useNavigate()
   const search = Route.useSearch()
 

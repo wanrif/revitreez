@@ -13,8 +13,8 @@ createRoot(document.getElementById('root')!).render(
     <AppErrorBoundary>
       <Providers>
         <App />
+        <Toaster richColors />
       </Providers>
     </AppErrorBoundary>
-    <Toaster richColors />
   </StrictMode>,
 )

@@ -1,7 +1,7 @@
 import type { RouterContext } from '@/lib/router-context'
 
-import { DEFAULT_AUTHENTICATED_REDIRECT, getRedirectPathFromHref } from '@/lib/auth-navigation'
-import { ensureAuthSession, getCachedAuthSession, refreshAuthSession } from '@/lib/auth-query'
+import { getRedirectPathFromHref } from '@/lib/auth-navigation'
+import { ensureAuthSession, getCachedAuthSession } from '@/lib/auth-query'
 import { redirect } from '@tanstack/react-router'
 
 interface RouteLocation {
@@ -32,14 +32,6 @@ export async function getSessionOrNull(queryClient: RouterContext['queryClient']
       console.warn('[Auth Route Guard] Session check failed, continuing as guest', error)
     }
 
-    try {
-      return await refreshAuthSession(queryClient)
-    } catch (refreshError) {
-      if (import.meta.env.DEV) {
-        console.warn('[Auth Route Guard] Session refresh failed, continuing as guest', refreshError)
-      }
-    }
-
     return null
   }
 }
@@ -63,6 +55,6 @@ export async function requireGuest({ context, location }: RequireGuestArgs) {
   const session = await getSessionOrNull(context.queryClient)
 
   if (session) {
-    throw redirect({ to: getRedirectPathFromHref(location.href) || DEFAULT_AUTHENTICATED_REDIRECT })
+    throw redirect({ to: getRedirectPathFromHref(location.href) })
   }
 }

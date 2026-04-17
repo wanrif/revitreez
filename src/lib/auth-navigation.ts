@@ -4,7 +4,7 @@ const SIGN_IN_ROUTE = '/sign-in'
 export function sanitizeRedirectPath(value: string | undefined): string {
   if (!value) return DEFAULT_AUTHENTICATED_REDIRECT
 
-  if (/^[a-z][a-z\d+\-.]*:/i.test(value) || value.startsWith('//')) {
+  if (/^[a-z][a-z\d+\-.]*:/i.test(value) || value.startsWith('//') || value.startsWith('\\')) {
     return DEFAULT_AUTHENTICATED_REDIRECT
   }
 
