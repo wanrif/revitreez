@@ -13,11 +13,11 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const variantClasses: Record<Variant, string> = {
   primary:
-    'bg-teal-600 text-white shadow-sm hover:bg-teal-700 active:bg-teal-800 focus-visible:ring-teal-600 dark:bg-teal-500 dark:hover:bg-teal-600 dark:active:bg-teal-700 dark:focus-visible:ring-teal-500',
+    'bg-primary text-primary-foreground shadow-sm hover:bg-primary-hover active:bg-primary-active focus-visible:ring-ring',
   secondary:
-    'bg-gray-200 text-gray-900 shadow-sm hover:bg-gray-300 active:bg-gray-400 focus-visible:ring-gray-400 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 dark:active:bg-gray-500 dark:focus-visible:ring-gray-500',
+    'border border-border bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary-hover active:bg-secondary-active focus-visible:ring-ring',
   ghost:
-    'bg-transparent text-teal-600 hover:bg-teal-50 active:bg-teal-100 focus-visible:ring-teal-500 dark:text-teal-300 dark:hover:bg-slate-800 dark:active:bg-slate-700 dark:focus-visible:ring-teal-400',
+    'bg-transparent text-primary hover:bg-accent-soft hover:text-accent-soft-foreground active:bg-accent focus-visible:ring-ring',
 }
 
 const sizeClasses: Record<Size, string> = {
@@ -30,7 +30,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'primary', size = 'md', className = '', children, ...rest }, ref) => {
     const disabledClasses = rest.disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''
     const baseClasses =
-      'inline-flex items-center justify-center corner-squircle rounded-3xl font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ring-offset-white dark:ring-offset-slate-900'
+      'inline-flex items-center justify-center corner-squircle rounded-3xl font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ring-offset-background'
 
     return (
       <button

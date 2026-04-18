@@ -91,10 +91,7 @@ export function Skeleton({ loading, className, animate = true, children }: Skele
           {bones.map((bone, index) => (
             <div
               key={`${bone.top}-${bone.left}-${index}`}
-              className={cn(
-                'absolute bg-neutral-200/90 dark:bg-neutral-800',
-                animate && 'animate-pulse',
-              )}
+              className={cn('absolute bg-muted/90', animate && 'animate-pulse')}
               style={{
                 top: bone.top,
                 left: bone.left,

@@ -39,21 +39,17 @@ class AppErrorBoundary extends Component<AppErrorBoundaryProps, AppErrorBoundary
     }
 
     return (
-      <div className='flex min-h-screen items-center justify-center bg-neutral-50 p-6 dark:bg-neutral-950'>
-        <div className='w-full max-w-md rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm corner-squircle dark:border-neutral-800 dark:bg-neutral-900'>
-          <h1 className='text-xl font-semibold text-neutral-900 dark:text-neutral-100'>
-            Something went wrong
-          </h1>
-          <p className='mt-3 text-sm text-neutral-600 dark:text-neutral-300'>
+      <div className='flex min-h-screen items-center justify-center bg-surface-muted p-6'>
+        <div className='w-full max-w-md rounded-3xl border border-border bg-surface p-6 shadow-sm corner-squircle'>
+          <h1 className='text-xl font-semibold text-foreground'>Something went wrong</h1>
+          <p className='mt-3 text-sm text-muted-foreground'>
             The page crashed unexpectedly. You can refresh and continue using the app.
           </p>
-          <p className='mt-2 text-xs text-neutral-500 dark:text-neutral-400'>
-            {this.state.errorMessage}
-          </p>
+          <p className='mt-2 text-xs text-muted-foreground'>{this.state.errorMessage}</p>
           <button
             type='button'
             onClick={this.handleReload}
-            className='mt-5 inline-flex items-center justify-center rounded-3xl bg-teal-600 px-4 py-2 text-sm font-medium text-white transition-colors corner-squircle hover:bg-teal-700'
+            className='mt-5 inline-flex items-center justify-center rounded-3xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors corner-squircle hover:bg-primary-hover'
           >
             Reload App
           </button>

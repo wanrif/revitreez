@@ -210,32 +210,32 @@ function SignInPage() {
       <div className='mb-6 flex justify-center'>
         <Link
           to='/'
-          className='group inline-flex items-center gap-3 rounded-2xl px-3 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-teal-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white focus-visible:outline-none dark:focus-visible:ring-offset-neutral-950'
+          className='group inline-flex items-center gap-3 rounded-2xl px-3 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none'
         >
           <span className='relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-teal-500 via-emerald-500 to-cyan-500 text-sm font-bold text-white shadow-lg shadow-teal-500/20 corner-squircle'>
             <span className='absolute inset-px rounded-[calc(var(--radius-2xl)-1px)] bg-linear-to-br from-white/20 to-transparent' />
             <span className='relative'>R</span>
           </span>
           <span className='text-left'>
-            <span className='block text-xs font-medium tracking-[0.28em] text-neutral-500 uppercase transition-colors group-hover:text-teal-600 dark:text-neutral-400 dark:group-hover:text-teal-400'>
+            <span className='block text-xs font-medium tracking-[0.28em] text-muted-foreground uppercase transition-colors group-hover:text-primary'>
               Welcome to
             </span>
-            <span className='block text-xl font-semibold tracking-tight text-neutral-900 transition-colors group-hover:text-teal-700 dark:text-neutral-100 dark:group-hover:text-teal-300'>
+            <span className='block text-xl font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary-hover'>
               Revitreez
             </span>
           </span>
         </Link>
       </div>
 
-      <div className='rounded-3xl border border-neutral-200 bg-white p-8 shadow-sm corner-squircle dark:border-neutral-800 dark:bg-neutral-900'>
-        <h1 className='text-2xl font-semibold text-neutral-900 dark:text-neutral-100'>
+      <div className='rounded-3xl border border-border bg-surface p-8 shadow-sm corner-squircle'>
+        <h1 className='text-2xl font-semibold text-foreground'>
           {mode === 'sign-up'
             ? 'Create Account'
             : mode === 'forgot-password'
               ? 'Reset Password'
               : 'Sign In'}
         </h1>
-        <p className='mt-3 text-neutral-600 dark:text-neutral-300'>
+        <p className='mt-3 text-muted-foreground'>
           {mode === 'sign-up'
             ? 'Use email and password to create an account.'
             : mode === 'forgot-password'
@@ -456,7 +456,7 @@ function SignInPage() {
 
           {mode === 'sign-in' ? (
             <div className='space-y-2'>
-              <p className='text-center text-xs tracking-wide text-neutral-500 uppercase dark:text-neutral-400'>
+              <p className='text-center text-xs tracking-wide text-muted-foreground uppercase'>
                 Or continue with
               </p>
               <div className='grid grid-cols-2 gap-3'>
@@ -477,13 +477,9 @@ function SignInPage() {
         </div>
 
         {isSessionActive ? (
-          <p className='mt-4 text-sm text-teal-700 dark:text-teal-400'>
-            Session detected for this browser.
-          </p>
+          <p className='mt-4 text-sm text-primary'>Session detected for this browser.</p>
         ) : (
-          <p className='mt-4 text-sm text-neutral-500 dark:text-neutral-400'>
-            No active session yet.
-          </p>
+          <p className='mt-4 text-sm text-muted-foreground'>No active session yet.</p>
         )}
 
         <div className='mt-5 flex flex-wrap gap-3'>

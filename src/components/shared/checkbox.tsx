@@ -52,9 +52,11 @@ export const Checkbox: FC<CheckboxProps> = ({
         data-skeleton-block='true'
         className={cn(
           'flex h-4 w-4 shrink-0 items-center justify-center rounded-md border transition-colors duration-150 ease-out',
-          'peer-focus-visible:border-teal-500 peer-focus-visible:ring-3 peer-focus-visible:ring-teal-500/20',
-          checked ? 'border-teal-500 bg-teal-500 text-white' : 'bg-slate-100 text-transparent',
-          !disabled && 'group-hover:border-teal-500/70',
+          'peer-focus-visible:border-primary peer-focus-visible:ring-3 peer-focus-visible:ring-ring/20',
+          checked
+            ? 'border-primary bg-primary text-primary-foreground'
+            : 'border-input bg-surface-muted text-transparent',
+          !disabled && 'group-hover:border-primary/70',
           inputClassName,
         )}
       >

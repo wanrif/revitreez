@@ -3,26 +3,20 @@ import { Link } from '@tanstack/react-router'
 
 const NotFound = () => {
   return (
-    <div className='flex min-h-screen flex-col items-center justify-center bg-white px-6 dark:bg-neutral-950'>
+    <div className='flex min-h-screen flex-col items-center justify-center bg-background px-6'>
       <div className='text-center'>
         {/* Illustration */}
         <div className='mx-auto mb-8 w-64'>
           <svg viewBox='0 0 200 150' className='w-full'>
             {/* Ground */}
-            <ellipse
-              cx='100'
-              cy='140'
-              rx='80'
-              ry='8'
-              className='fill-neutral-100 dark:fill-neutral-800'
-            />
+            <ellipse cx='100' cy='140' rx='80' ry='8' className='fill-muted' />
 
             {/* Character body */}
             <g className='animate-[wiggle_2s_ease-in-out_infinite]'>
               {/* Body */}
-              <rect x='85' y='70' width='30' height='50' rx='15' className='fill-teal-500' />
+              <rect x='85' y='70' width='30' height='50' rx='15' className='fill-primary' />
               {/* Head */}
-              <circle cx='100' cy='55' r='20' className='fill-teal-600' />
+              <circle cx='100' cy='55' r='20' className='fill-primary-hover' />
               {/* Eyes */}
               <circle cx='93' cy='52' r='3' className='fill-white' />
               <circle cx='107' cy='52' r='3' className='fill-white' />
@@ -55,27 +49,27 @@ const NotFound = () => {
                 stroke='currentColor'
                 strokeWidth='8'
                 strokeLinecap='round'
-                className='stroke-teal-500'
+                className='stroke-primary'
               />
               <path
                 d='M115 80 L135 70'
                 stroke='currentColor'
                 strokeWidth='8'
                 strokeLinecap='round'
-                className='stroke-teal-500'
+                className='stroke-primary'
               />
               {/* Question marks */}
-              <text x='140' y='60' className='fill-teal-400 text-lg font-bold'>
+              <text x='140' y='60' className='fill-accent text-lg font-bold'>
                 ?
               </text>
-              <text x='55' y='75' className='fill-teal-400 text-sm font-bold'>
+              <text x='55' y='75' className='fill-accent text-sm font-bold'>
                 ?
               </text>
             </g>
 
             {/* Legs */}
-            <rect x='88' y='115' width='10' height='20' rx='5' className='fill-teal-600' />
-            <rect x='102' y='115' width='10' height='20' rx='5' className='fill-teal-600' />
+            <rect x='88' y='115' width='10' height='20' rx='5' className='fill-primary-hover' />
+            <rect x='102' y='115' width='10' height='20' rx='5' className='fill-primary-hover' />
 
             {/* Map pieces on ground */}
             <rect
@@ -84,7 +78,7 @@ const NotFound = () => {
               width='15'
               height='12'
               rx='2'
-              className='fill-neutral-300 dark:fill-neutral-600'
+              className='fill-border'
               transform='rotate(-15 47 131)'
             />
             <rect
@@ -93,24 +87,22 @@ const NotFound = () => {
               width='12'
               height='10'
               rx='2'
-              className='fill-neutral-300 dark:fill-neutral-600'
+              className='fill-border'
               transform='rotate(10 151 133)'
             />
           </svg>
         </div>
 
         {/* 404 */}
-        <h1 className='text-8xl font-bold tracking-tight text-neutral-900 dark:text-white'>
-          4<span className='text-teal-500'>0</span>4
+        <h1 className='text-8xl font-bold tracking-tight text-foreground'>
+          4<span className='text-primary'>0</span>4
         </h1>
 
         {/* Title */}
-        <h2 className='mt-4 text-2xl font-semibold text-neutral-700 dark:text-neutral-200'>
-          Page not found
-        </h2>
+        <h2 className='mt-4 text-2xl font-semibold text-foreground'>Page not found</h2>
 
         {/* Description */}
-        <p className='mx-auto mt-3 max-w-sm text-neutral-500 dark:text-neutral-400'>
+        <p className='mx-auto mt-3 max-w-sm text-muted-foreground'>
           Oops! Looks like you took a wrong turn. The page you're looking for doesn't exist.
         </p>
 

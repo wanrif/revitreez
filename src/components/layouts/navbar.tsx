@@ -11,23 +11,21 @@ const Navbar = () => {
   const userLabel = user?.name || user?.email || 'Account'
 
   return (
-    <header className='border-b border-neutral-100 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900'>
+    <header className='border-b border-border bg-surface shadow-sm'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='flex h-16 items-center justify-between'>
           <div className='flex items-center gap-6'>
-            <h1 className='text-xl font-semibold text-neutral-900 dark:text-neutral-100'>
-              Revitreez
-            </h1>
+            <h1 className='text-xl font-semibold text-foreground'>Revitreez</h1>
             <nav className='hidden items-center gap-3 sm:flex'>
               <Link
                 to='/'
-                className='text-sm text-neutral-600 transition-colors hover:text-teal-600 dark:text-neutral-300 dark:hover:text-teal-400'
+                className='text-sm text-muted-foreground transition-colors hover:text-primary'
               >
                 Home
               </Link>
               <Link
                 to='/dashboard'
-                className='text-sm text-neutral-600 transition-colors hover:text-teal-600 dark:text-neutral-300 dark:hover:text-teal-400'
+                className='text-sm text-muted-foreground transition-colors hover:text-primary'
               >
                 Dashboard
               </Link>
@@ -39,7 +37,7 @@ const Navbar = () => {
             <Skeleton loading={isLoading}>
               {session ? (
                 <>
-                  <span className='hidden text-sm text-neutral-600 sm:inline dark:text-neutral-300'>
+                  <span className='hidden text-sm text-muted-foreground sm:inline'>
                     {userLabel}
                   </span>
                   <Button

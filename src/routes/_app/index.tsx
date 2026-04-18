@@ -107,33 +107,33 @@ function LandingPage() {
   return (
     <div className='-mx-4 -mt-6 sm:-mx-6 lg:-mx-8'>
       {/* Hero Section */}
-      <section className='relative overflow-hidden bg-linear-to-b from-teal-50 to-white px-4 py-20 sm:px-6 lg:px-8 dark:from-neutral-900 dark:to-neutral-950'>
+      <section className='relative overflow-hidden bg-linear-to-b from-accent-soft to-background px-4 py-20 sm:px-6 lg:px-8'>
         {/* Background decoration */}
         <div className='absolute inset-0 overflow-hidden'>
-          <div className='absolute -top-40 -right-40 h-80 w-80 rounded-full bg-teal-200/30 blur-3xl dark:bg-teal-500/10' />
-          <div className='absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-cyan-200/30 blur-3xl dark:bg-cyan-500/10' />
+          <div className='absolute -top-40 -right-40 h-80 w-80 rounded-full bg-primary/14 blur-3xl' />
+          <div className='absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-accent/20 blur-3xl' />
         </div>
 
         <div className='relative mx-auto max-w-4xl text-center'>
           {/* Badge */}
-          <div className='mb-6 inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/80 px-4 py-1.5 text-sm font-medium text-teal-700 backdrop-blur-sm dark:border-teal-800 dark:bg-neutral-900/80 dark:text-teal-400'>
+          <div className='mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-sm font-medium text-primary backdrop-blur-sm'>
             <span className='relative flex h-2 w-2'>
-              <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-400 opacity-75'></span>
-              <span className='relative inline-flex h-2 w-2 rounded-full bg-teal-500'></span>
+              <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/70 opacity-75'></span>
+              <span className='relative inline-flex h-2 w-2 rounded-full bg-primary'></span>
             </span>
             Production Ready Boilerplate
           </div>
 
           {/* Heading */}
-          <h1 className='text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl md:text-6xl dark:text-white'>
+          <h1 className='text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl'>
             Build faster with{' '}
-            <span className='bg-linear-to-r from-teal-500 to-cyan-500 bg-clip-text text-transparent'>
+            <span className='bg-linear-to-r from-primary to-accent bg-clip-text text-transparent'>
               Revitreez
             </span>
           </h1>
 
           {/* Subheading */}
-          <p className='mx-auto mt-6 max-w-2xl text-lg text-neutral-600 dark:text-neutral-400'>
+          <p className='mx-auto mt-6 max-w-2xl text-lg text-muted-foreground'>
             A modern React boilerplate with everything you need to build production-ready
             applications. Type-safe, fast, and developer-friendly.
           </p>
@@ -159,14 +159,12 @@ function LandingPage() {
 
           {/* Tech stack pills */}
           <div className='mt-12'>
-            <p className='mb-4 text-sm font-medium text-neutral-500 dark:text-neutral-400'>
-              Built with
-            </p>
+            <p className='mb-4 text-sm font-medium text-muted-foreground'>Built with</p>
             <div className='flex flex-wrap justify-center gap-2'>
               {techStack.map((tech) => (
                 <span
                   key={tech.name}
-                  className='inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-sm font-medium text-neutral-700 shadow-sm ring-1 ring-neutral-200 corner-squircle dark:bg-neutral-800 dark:text-neutral-300 dark:ring-neutral-700'
+                  className='inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1 text-sm font-medium text-surface-foreground shadow-sm ring-1 ring-border corner-squircle'
                 >
                   <span className={`h-2 w-2 rounded-full ${tech.color}`}></span>
                   {tech.name}
@@ -181,10 +179,10 @@ function LandingPage() {
       <section className='px-4 py-20 sm:px-6 lg:px-8'>
         <div className='mx-auto max-w-6xl'>
           <div className='text-center'>
-            <h2 className='text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl dark:text-white'>
+            <h2 className='text-3xl font-bold tracking-tight text-foreground sm:text-4xl'>
               Everything you need to ship fast
             </h2>
-            <p className='mx-auto mt-4 max-w-2xl text-lg text-neutral-600 dark:text-neutral-400'>
+            <p className='mx-auto mt-4 max-w-2xl text-lg text-muted-foreground'>
               Pre-configured with best practices and modern tooling so you can focus on building
               your product.
             </p>
@@ -194,15 +192,13 @@ function LandingPage() {
             {features.map((feature) => (
               <div
                 key={feature.title}
-                className='group rounded-3xl border border-neutral-200 bg-white p-6 transition-all corner-squircle hover:border-teal-300 hover:shadow-lg hover:shadow-teal-100 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-teal-700 dark:hover:shadow-teal-900/20'
+                className='group rounded-3xl border border-border bg-surface p-6 transition-all corner-squircle hover:border-primary/35 hover:shadow-lg hover:shadow-primary/10'
               >
-                <div className='mb-4 inline-flex rounded-3xl bg-teal-100 p-3 text-teal-600 transition-colors corner-squircle group-hover:bg-teal-500 group-hover:text-white dark:bg-teal-900/50 dark:text-teal-400 dark:group-hover:bg-teal-600'>
+                <div className='mb-4 inline-flex rounded-3xl bg-accent-soft p-3 text-primary transition-colors corner-squircle group-hover:bg-primary group-hover:text-primary-foreground'>
                   {feature.icon}
                 </div>
-                <h3 className='mb-2 text-lg font-semibold text-neutral-900 dark:text-white'>
-                  {feature.title}
-                </h3>
-                <p className='text-neutral-600 dark:text-neutral-400'>{feature.description}</p>
+                <h3 className='mb-2 text-lg font-semibold text-foreground'>{feature.title}</h3>
+                <p className='text-muted-foreground'>{feature.description}</p>
               </div>
             ))}
           </div>
@@ -210,49 +206,49 @@ function LandingPage() {
       </section>
 
       {/* Code Preview Section */}
-      <section className='bg-neutral-50 px-4 py-20 sm:px-6 lg:px-8 dark:bg-neutral-900/50'>
+      <section className='bg-surface-muted px-4 py-20 sm:px-6 lg:px-8'>
         <div className='mx-auto max-w-4xl'>
           <div className='text-center'>
-            <h2 className='text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl dark:text-white'>
+            <h2 className='text-3xl font-bold tracking-tight text-foreground sm:text-4xl'>
               Get started in seconds
             </h2>
-            <p className='mx-auto mt-4 max-w-2xl text-lg text-neutral-600 dark:text-neutral-400'>
+            <p className='mx-auto mt-4 max-w-2xl text-lg text-muted-foreground'>
               Clone, install, and start building. It's that simple.
             </p>
           </div>
 
-          <div className='mt-12 overflow-hidden rounded-2xl bg-neutral-900 shadow-2xl dark:ring-1 dark:ring-neutral-700'>
+          <div className='mt-12 overflow-hidden rounded-2xl bg-surface-inverse text-surface-inverse-foreground shadow-2xl ring-1 ring-border/40'>
             {/* Terminal header */}
-            <div className='flex items-center gap-2 border-b border-neutral-700 bg-neutral-800 px-4 py-3'>
+            <div className='flex items-center gap-2 border-b border-white/10 bg-white/6 px-4 py-3'>
               <div className='h-3 w-3 rounded-full bg-red-500'></div>
               <div className='h-3 w-3 rounded-full bg-yellow-500'></div>
               <div className='h-3 w-3 rounded-full bg-green-500'></div>
-              <span className='ml-2 text-sm text-neutral-400'>terminal</span>
+              <span className='ml-2 text-sm text-surface-inverse-muted'>terminal</span>
             </div>
             {/* Terminal content */}
             <div className='p-6 font-mono text-sm'>
               <div className='space-y-3'>
                 <p>
-                  <span className='text-green-400'>$</span>{' '}
-                  <span className='text-neutral-300'>
+                  <span className='text-success'>$</span>{' '}
+                  <span className='text-surface-inverse-foreground/88'>
                     git clone https://github.com/wanrif/revitreez.git
                   </span>
                 </p>
                 <p>
-                  <span className='text-green-400'>$</span>{' '}
-                  <span className='text-neutral-300'>cd revitreez</span>
+                  <span className='text-success'>$</span>{' '}
+                  <span className='text-surface-inverse-foreground/88'>cd revitreez</span>
                 </p>
                 <p>
-                  <span className='text-green-400'>$</span>{' '}
-                  <span className='text-neutral-300'>bun install</span>
+                  <span className='text-success'>$</span>{' '}
+                  <span className='text-surface-inverse-foreground/88'>bun install</span>
                 </p>
                 <p>
-                  <span className='text-green-400'>$</span>{' '}
-                  <span className='text-neutral-300'>bun dev</span>
+                  <span className='text-success'>$</span>{' '}
+                  <span className='text-surface-inverse-foreground/88'>bun dev</span>
                 </p>
-                <p className='mt-4 text-neutral-500'>
-                  <span className='text-cyan-400'>→</span> Ready at{' '}
-                  <span className='text-teal-400'>http://localhost:5173</span>
+                <p className='mt-4 text-surface-inverse-muted'>
+                  <span className='text-accent'>→</span> Ready at{' '}
+                  <span className='text-primary'>http://localhost:5173</span>
                 </p>
               </div>
             </div>
@@ -263,10 +259,10 @@ function LandingPage() {
       {/* CTA Section */}
       <section className='px-4 py-20 sm:px-6 lg:px-8'>
         <div className='mx-auto max-w-4xl text-center'>
-          <h2 className='text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl dark:text-white'>
+          <h2 className='text-3xl font-bold tracking-tight text-foreground sm:text-4xl'>
             Ready to build something amazing?
           </h2>
-          <p className='mx-auto mt-4 max-w-2xl text-lg text-neutral-600 dark:text-neutral-400'>
+          <p className='mx-auto mt-4 max-w-2xl text-lg text-muted-foreground'>
             Stop wasting time on boilerplate. Start building your next project with Revitreez today.
           </p>
           <div className='mt-10'>
@@ -286,12 +282,12 @@ function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className='border-t border-neutral-200 bg-white px-4 py-8 sm:px-6 lg:px-8 dark:border-neutral-800 dark:bg-neutral-950'>
+      <footer className='border-t border-border bg-surface px-4 py-8 sm:px-6 lg:px-8'>
         <div className='mx-auto max-w-6xl text-center'>
-          <p className='text-sm text-neutral-500 dark:text-neutral-400'>
-            Built with ❤️ using React, TypeScript, and Tailwind CSS
+          <p className='text-sm text-muted-foreground'>
+            Built with React, TypeScript, and Tailwind CSS
           </p>
-          <p className='mt-2 text-sm text-neutral-400 dark:text-neutral-500'>
+          <p className='mt-2 text-sm text-muted-foreground/80'>
             © {new Date().getFullYear()} Revitreez. Open source and free to use.
           </p>
         </div>
