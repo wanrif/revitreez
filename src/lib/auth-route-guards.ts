@@ -18,19 +18,29 @@ interface RequireGuestArgs {
   location: RouteLocation
 }
 
-export async function getSessionOrNull(context: Pick<RouterContext, 'auth' | 'queryClient'>) {
+function getKnownSessionOrNull(context: Pick<RouterContext, 'auth' | 'queryClient'>) {
   if (context.auth.session) {
     return context.auth.session
-  }
-
-  if (!context.auth.isLoading) {
-    return null
   }
 
   const cachedSession = getCachedAuthSession(context.queryClient)
 
   if (cachedSession) {
     return cachedSession
+  }
+
+  return null
+}
+
+export async function getSessionOrNull(context: Pick<RouterContext, 'auth' | 'queryClient'>) {
+  const knownSession = getKnownSessionOrNull(context)
+
+  if (knownSession) {
+    return knownSession
+  }
+
+  if (!context.auth.isLoading) {
+    return null
   }
 
   try {
@@ -60,7 +70,7 @@ export async function requireAuth({ context, location }: RequireAuthArgs) {
 }
 
 export async function requireGuest({ context, location }: RequireGuestArgs) {
-  const session = await getSessionOrNull(context)
+  const session = getKnownSessionOrNull(context)
 
   if (session) {
     throw redirect({ to: getRedirectPathFromHref(location.href) })
