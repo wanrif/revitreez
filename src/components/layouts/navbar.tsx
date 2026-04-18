@@ -36,7 +36,7 @@ const Navbar = () => {
 
           <div className='flex items-center gap-3'>
             <ButtonTheme />
-            <Skeleton loading={isLoading} className='h-8 w-24 rounded-md'>
+            <Skeleton loading={isLoading}>
               {session ? (
                 <>
                   <span className='hidden text-sm text-neutral-600 sm:inline dark:text-neutral-300'>

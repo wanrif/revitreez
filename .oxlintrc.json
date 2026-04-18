@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "react", "import"],
+  "plugins": ["eslint", "typescript", "unicorn", "react", "oxc", "import"],
   "env": {
     "builtin": true
   },
@@ -102,7 +102,7 @@
           }
         ]
       },
-      "plugins": ["typescript", "react"],
+      "plugins": ["eslint", "typescript", "unicorn", "react", "oxc", "import"],
       "env": {
         "es2020": true,
         "browser": true

@@ -1,23 +1,18 @@
-import { useMemo } from 'react'
+import { useEffect } from 'react'
 
-import { useAuthSessionQuery } from '@/lib/auth-query'
+import { useAuthSessionState } from '@/lib/auth-query'
 import { RouterProvider } from '@tanstack/react-router'
 
 import router from './lib/router'
 
 function App() {
-  const { data: session, isLoading } = useAuthSessionQuery()
+  const { auth, data: session, isLoading } = useAuthSessionState()
 
-  const authContext = useMemo(
-    () => ({
-      session: session ?? null,
-      isAuthenticated: Boolean(session),
-      isLoading: isLoading,
-    }),
-    [isLoading, session],
-  )
+  useEffect(() => {
+    void router.invalidate()
+  }, [isLoading, session])
 
-  return <RouterProvider router={router} context={{ auth: authContext }} />
+  return <RouterProvider router={router} context={{ auth }} />
 }
 
 export default App

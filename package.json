@@ -5,12 +5,13 @@
   "description": "Revitreez is boilerplate web application built with React, Vite, TypeScript, Tailwind CSS, TanStack Router, and TanStack Query.",
   "type": "module",
   "scripts": {
-    "dev": "bunx --bun vite",
     "build": "tsc -b && bunx --bun vite build",
     "build:analyze": "ANALYZE=true bun run build",
-    "lint": "oxlint .",
+    "dev": "bunx --bun vite",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
+    "format:lint": "bun run format && bun run lint",
+    "lint": "oxlint .",
     "preview": "bunx --bun vite preview"
   },
   "dependencies": {

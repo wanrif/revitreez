@@ -9,24 +9,32 @@ interface RouteLocation {
 }
 
 interface RequireAuthArgs {
-  context: Pick<RouterContext, 'queryClient'>
+  context: Pick<RouterContext, 'auth' | 'queryClient'>
   location: RouteLocation
 }
 
 interface RequireGuestArgs {
-  context: Pick<RouterContext, 'queryClient'>
+  context: Pick<RouterContext, 'auth' | 'queryClient'>
   location: RouteLocation
 }
 
-export async function getSessionOrNull(queryClient: RouterContext['queryClient']) {
-  const cachedSession = getCachedAuthSession(queryClient)
+export async function getSessionOrNull(context: Pick<RouterContext, 'auth' | 'queryClient'>) {
+  if (context.auth.session) {
+    return context.auth.session
+  }
+
+  if (!context.auth.isLoading) {
+    return null
+  }
+
+  const cachedSession = getCachedAuthSession(context.queryClient)
 
   if (cachedSession) {
     return cachedSession
   }
 
   try {
-    return await ensureAuthSession(queryClient)
+    return await ensureAuthSession(context.queryClient)
   } catch (error) {
     if (import.meta.env.DEV) {
       console.warn('[Auth Route Guard] Session check failed, continuing as guest', error)
@@ -37,7 +45,7 @@ export async function getSessionOrNull(queryClient: RouterContext['queryClient']
 }
 
 export async function requireAuth({ context, location }: RequireAuthArgs) {
-  const session = await getSessionOrNull(context.queryClient)
+  const session = await getSessionOrNull(context)
 
   if (!session) {
     throw redirect({
@@ -52,7 +60,7 @@ export async function requireAuth({ context, location }: RequireAuthArgs) {
 }
 
 export async function requireGuest({ context, location }: RequireGuestArgs) {
-  const session = await getSessionOrNull(context.queryClient)
+  const session = await getSessionOrNull(context)
 
   if (session) {
     throw redirect({ to: getRedirectPathFromHref(location.href) })

@@ -3,10 +3,11 @@ import { useState } from 'react'
 import { Button, Checkbox, Input } from '@/components/shared'
 import { authClient } from '@/lib/auth-client'
 import { sanitizeRedirectPath } from '@/lib/auth-navigation'
-import { clearAuthSession, refreshAuthSession, useAuthSessionQuery } from '@/lib/auth-query'
+import { refreshAuthSession, useAuthSessionQuery } from '@/lib/auth-query'
 import { requireGuest } from '@/lib/auth-route-guards'
 import { useForm } from '@tanstack/react-form'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -50,6 +51,7 @@ const forgotPasswordSchema = z.object({
 function SignInPage() {
   const { data: session, refetch, isRefetching } = useAuthSessionQuery({ enabled: false })
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const search = Route.useSearch()
 
   const [mode, setMode] = useState<AuthMode>('sign-in')
@@ -59,8 +61,7 @@ function SignInPage() {
   const isSessionActive = Boolean(session)
 
   const goAfterAuth = async () => {
-    await clearAuthSession()
-    await refreshAuthSession()
+    await refreshAuthSession(queryClient)
     await navigate({ to: redirectTo, replace: true })
   }
 
@@ -206,6 +207,26 @@ function SignInPage() {
 
   return (
     <div className='mx-auto max-w-xl px-4 py-20'>
+      <div className='mb-6 flex justify-center'>
+        <Link
+          to='/'
+          className='group inline-flex items-center gap-3 rounded-2xl px-3 py-2 transition-colors focus-visible:ring-2 focus-visible:ring-teal-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-white focus-visible:outline-none dark:focus-visible:ring-offset-neutral-950'
+        >
+          <span className='relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-teal-500 via-emerald-500 to-cyan-500 text-sm font-bold text-white shadow-lg shadow-teal-500/20 corner-squircle'>
+            <span className='absolute inset-px rounded-[calc(var(--radius-2xl)-1px)] bg-linear-to-br from-white/20 to-transparent' />
+            <span className='relative'>R</span>
+          </span>
+          <span className='text-left'>
+            <span className='block text-xs font-medium tracking-[0.28em] text-neutral-500 uppercase transition-colors group-hover:text-teal-600 dark:text-neutral-400 dark:group-hover:text-teal-400'>
+              Welcome to
+            </span>
+            <span className='block text-xl font-semibold tracking-tight text-neutral-900 transition-colors group-hover:text-teal-700 dark:text-neutral-100 dark:group-hover:text-teal-300'>
+              Revitreez
+            </span>
+          </span>
+        </Link>
+      </div>
+
       <div className='rounded-3xl border border-neutral-200 bg-white p-8 shadow-sm corner-squircle dark:border-neutral-800 dark:bg-neutral-900'>
         <h1 className='text-2xl font-semibold text-neutral-900 dark:text-neutral-100'>
           {mode === 'sign-up'

@@ -1,12 +1,51 @@
 import type { AuthSession } from '@/lib/auth-client'
+import type { AuthRouterContext } from '@/lib/router-context'
 import type { QueryClient } from '@tanstack/react-query'
 
 import { authClient } from '@/lib/auth-client'
 import queryClient from '@/lib/query-client'
-import { queryOptions, useMutation, useQuery } from '@tanstack/react-query'
+import { queryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 
+import { SIGN_IN_ROUTE } from './auth-navigation'
+
 export const authSessionQueryKey = ['auth', 'session'] as const
+
+function createAuthClientError(
+  message: string,
+  error: {
+    code?: string
+    status?: number
+    statusText?: string
+  },
+) {
+  const authError = new Error(message) as Error & {
+    code?: string
+    status?: number
+    statusText?: string
+  }
+
+  authError.code = error.code
+  authError.status = error.status
+  authError.statusText = error.statusText
+
+  return authError
+}
+
+async function fetchAuthSession() {
+  const response = await authClient.getSession()
+
+  if (response.error) {
+    throw createAuthClientError(response.error.message || 'Failed to fetch auth session', {
+      code: response.error.code,
+      status: response.error.status,
+      statusText: response.error.statusText,
+    })
+  }
+
+  return response.data ?? null
+}
 
 function shouldRetryAuthSession(failureCount: number, error: unknown): boolean {
   const status =
@@ -23,30 +62,25 @@ function shouldRetryAuthSession(failureCount: number, error: unknown): boolean {
 
 export const authSessionQueryOptions = queryOptions({
   queryKey: authSessionQueryKey,
-  queryFn: async () => {
-    const response = await authClient.getSession()
-
-    if (response.error) {
-      const error = new Error(response.error.message || 'Failed to fetch auth session') as Error & {
-        code?: string
-        status?: number
-        statusText?: string
-      }
-
-      error.code = response.error.code
-      error.status = response.error.status
-      error.statusText = response.error.statusText
-
-      throw error
-    }
-
-    return response.data ?? null
-  },
+  queryFn: fetchAuthSession,
   retry: shouldRetryAuthSession,
   staleTime: 60_000,
   refetchOnReconnect: true,
   refetchOnWindowFocus: true,
 })
+
+export function createAuthRouterContext(
+  session: AuthSession | undefined,
+  isLoading: boolean,
+): AuthRouterContext {
+  const resolvedSession = session ?? null
+
+  return {
+    session: resolvedSession,
+    isAuthenticated: Boolean(resolvedSession),
+    isLoading,
+  }
+}
 
 export function getCachedAuthSession(queryClientInstance: QueryClient = queryClient) {
   return (queryClientInstance.getQueryData(authSessionQueryOptions.queryKey) ?? null) as AuthSession
@@ -73,8 +107,6 @@ export async function ensureAuthSession(queryClientInstance: QueryClient = query
 }
 
 export async function refreshAuthSession(queryClientInstance: QueryClient = queryClient) {
-  await invalidateAuthSession(queryClientInstance)
-
   return queryClientInstance.fetchQuery({
     ...authSessionQueryOptions,
     staleTime: 0,
@@ -85,27 +117,48 @@ export function useAuthSessionQuery(overrides?: { enabled?: boolean }) {
   return useQuery({ ...authSessionQueryOptions, ...overrides })
 }
 
+export function useAuthSessionState() {
+  const query = useAuthSessionQuery()
+
+  return {
+    ...query,
+    auth: createAuthRouterContext(query.data, query.isLoading),
+  }
+}
+
 export function useSignOutMutation() {
+  const queryClientInstance = useQueryClient()
+  const navigate = useNavigate()
+
   return useMutation({
     mutationFn: async () => {
-      await authClient.signOut()
+      const response = await authClient.signOut()
+
+      if (response.error) {
+        throw createAuthClientError(response.error.message || 'Sign-out failed', {
+          code: response.error.code,
+          status: response.error.status,
+          statusText: response.error.statusText,
+        })
+      }
     },
     onMutate: async () => {
-      const previousSession = getCachedAuthSession()
+      const previousSession = getCachedAuthSession(queryClientInstance)
 
-      await clearAuthSession()
+      await clearAuthSession(queryClientInstance)
 
       return { previousSession }
     },
     onError: (error, _variables, context) => {
-      setCachedAuthSession(context?.previousSession ?? null)
+      setCachedAuthSession(context?.previousSession ?? null, queryClientInstance)
       toast.error(error instanceof Error ? error.message : 'Sign-out failed')
     },
     onSuccess: () => {
       toast.success('Signed out successfully')
     },
     onSettled: async () => {
-      await invalidateAuthSession()
+      await invalidateAuthSession(queryClientInstance)
+      await navigate({ to: SIGN_IN_ROUTE, replace: true })
     },
   })
 }

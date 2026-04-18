@@ -31,19 +31,17 @@ export default defineConfig({
     cssMinify: 'lightningcss',
     minify: 'oxc',
     rolldownOptions: {
-      plugins: [
-        ...(isAnalyze
-          ? [
-              visualizer({
-                filename: 'dist/stats.html',
-                template: 'treemap',
-                gzipSize: true,
-                brotliSize: true,
-                open: false,
-              }),
-            ]
-          : []),
-      ],
+      plugins: isAnalyze
+        ? [
+            visualizer({
+              filename: 'dist/stats.html',
+              template: 'treemap',
+              gzipSize: true,
+              brotliSize: true,
+              open: false,
+            }),
+          ]
+        : [],
       output: {
         minify: {
           compress: {

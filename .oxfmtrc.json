@@ -64,6 +64,9 @@
     "newlinesBetween": true,
     "ignoreCase": true
   },
+  "sortPackageJson": {
+    "sortScripts": true
+  },
   "sortTailwindcss": {
     "stylesheet": "./src/assets/css/main.css",
     "functions": ["clsx", "cn"],
