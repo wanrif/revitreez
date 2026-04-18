@@ -6,6 +6,7 @@
 - Install dependencies with `bun install`.
 - Start the dev server with `bun dev`.
 - Run production validation with `bun run build`.
+- Use `bun run build:analyze` when you need bundle analysis output.
 - Run linting with `bun run lint`.
 - Run formatting with `bun run format`.
 - Use `bun run format:check` when you only need a formatting check.
@@ -21,6 +22,9 @@
   it manually.
 - Shared layout and app providers live under `src/components/layouts`.
 - Router setup is in `src/lib/router.tsx`.
+- Auth session state is owned by TanStack Query in `src/lib/auth-query.ts`.
+- `src/App.tsx` derives TanStack Router context from the auth query and calls
+  `router.invalidate()` when auth state changes.
 - Data access goes through `src/services/api.ts` and `src/services/request.ts`.
 - Shared API response and DTO helper types live in `src/types/api.ts`.
 
@@ -31,11 +35,15 @@
   `@/services/api`.
 - API helpers return `ResponseData<T>` or `PaginatedResponseData<T>` and throw
   `ApiError` on failure.
+- Prefer existing barrel exports from `src/components/layouts`,
+  `src/components/shared`, and `src/components/ui` when available.
 - Follow the route file pattern already used in `src/routes`:
   - `__root.tsx` for root route concerns
   - `_app.tsx` for the main layout route
   - `_app/*.tsx` for pages rendered inside `MainLayout`
 - Use `cn()` from `@/lib/utils` for conditional class composition.
+- Prefer the wrapper-based `Skeleton` component in `src/components/shared` so
+  placeholders stay aligned with the real layout.
 - Keep changes aligned with the existing provider and router setup instead of
   introducing parallel app wiring.
 
@@ -67,30 +75,3 @@
 - Always use a SOLID frontend review mindset for UI refactors and code reviews.
 - Prefer minimal diffs and preserve existing public APIs unless the task
   explicitly requires a change.
-
-# RTK — Token-Optimized CLI
-
-**rtk** is a CLI proxy that filters and compresses command outputs, saving
-60-90% tokens.
-
-## Rule
-
-Always prefix shell commands with `rtk`:
-
-```bash
-# Instead of:              Use:
-git status                 rtk git status
-git log -10                rtk git log -10
-cargo test                 rtk cargo test
-docker ps                  rtk docker ps
-kubectl get pods           rtk kubectl pods
-```
-
-## Meta commands (use directly)
-
-```bash
-rtk gain              # Token savings dashboard
-rtk gain --history    # Per-command savings history
-rtk discover          # Find missed rtk opportunities
-rtk proxy <cmd>       # Run raw (no filtering) but track usage
-```
